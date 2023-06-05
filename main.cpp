@@ -1,9 +1,10 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <Windows.h>
 #include <stdlib.h>
 using namespace std;
+
+int m, n, gen = 0, alive = 0;
 
 inline short count(const vector<vector<int>>& board, int i, int j, int m, int n) {
     short nbrs = 0;
@@ -25,10 +26,16 @@ void nextStep(vector<vector<int>>& board, int m, int n) {
         for (int j = 0; j < n; j++) {
             short nbrs = count(board, i, j, m, n);
             if (board[i][j]) {
-                if (nbrs < 2 || nbrs > 3) trans[i][j] = 0;
+                if (nbrs < 2 || nbrs > 3) {
+                    trans[i][j] = 0;
+                    if (board[i][j]) alive--;
+                }
             }
             else {
-                if (nbrs == 3) trans[i][j] = 1;
+                if (nbrs == 3) {
+                    trans[i][j] = 1;
+                    if (!board[i][j]) alive++;
+                }
             }
         }
     }
@@ -38,12 +45,16 @@ void nextStep(vector<vector<int>>& board, int m, int n) {
 #define next() nextStep(board, m, n);
 
 void print(const vector<vector<int>>& board, int m, int n) {
+    for (int i = 0; i < 2 * n; i++) cout << "-";
+    cout << endl;
+
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            cout << board[i][j] << " ";
+            cout << (board[i][j] ? "@" : " ") << " ";
         }
         cout << endl;
     }
+
     for (int i = 0; i < 2 * n; i++) cout << "-";
     cout << endl;
 }
@@ -51,23 +62,26 @@ void print(const vector<vector<int>>& board, int m, int n) {
 
 int main(void) {
 
-    int m, n;
     cin >> m >> n;
     vector<vector<int>> board(m);
 
+    srand(time(0));
+
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            int x;
-            cin >> x;
+            int x = rand() % 2;
+            if (x) alive++;
             board[i].push_back(x);
         }
     }
 
     while (true) {
-        system("cls");
+        cout << "\033[2J\033[1;1H";
+        printf("GENERATION: %d\nAlive cells: %d\n", gen, alive);
+        gen++;
         display();
         next();
-        Sleep(1000);
+        Sleep(400);
     }
 
     return 0;
