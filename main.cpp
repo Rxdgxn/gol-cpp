@@ -28,13 +28,13 @@ void nextStep(vector<vector<int>>& board, int m, int n) {
             if (board[i][j]) {
                 if (nbrs < 2 || nbrs > 3) {
                     trans[i][j] = 0;
-                    if (board[i][j]) alive--;
+                    alive--;
                 }
             }
             else {
                 if (nbrs == 3) {
                     trans[i][j] = 1;
-                    if (!board[i][j]) alive++;
+                    alive++;
                 }
             }
         }
@@ -81,7 +81,7 @@ int main(void) {
         gen++;
         display();
         next();
-        Sleep(400);
+        Sleep(200);
     }
 
     return 0;
