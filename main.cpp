@@ -6,6 +6,13 @@ using namespace std;
 
 int m, n, gen = 0, alive = 0;
 
+static auto _ = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return nullptr;
+}();
+
 inline short count(const vector<vector<int>>& board, int i, int j, int m, int n) {
     short nbrs = 0;
     nbrs += (i > 0 ? board[i-1][j] : 0);
@@ -77,11 +84,11 @@ int main(void) {
 
     while (true) {
         cout << "\033[2J\033[1;1H";
-        printf("GENERATION: %d\nAlive cells: %d\n", gen, alive);
+        printf("Generation: %d\nAlive cells: %d\n", gen, alive);
         gen++;
         display();
         next();
-        Sleep(200);
+        Sleep(100);
     }
 
     return 0;
